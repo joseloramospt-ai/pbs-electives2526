@@ -28,7 +28,7 @@ const ELECTIVES = [
     { id: "eta", name: "Entrepreneurship Through Acquisitions", faculty: "Diogo Almeida Alves", links: ["https://www.linkedin.com/in/diogoalmeidalves"], format: "Hybrid", desc: "Full ETA lifecycle: targets, due diligence, deal structuring, financing, post-acquisition value creation.", concentrations: ["Finance & Investments","Innovation & Entrepreneurship"] },
     { id: "elab", name: "Entrepreneurial Lab", faculty: "Alberto Levy", links: ["https://www.linkedin.com/in/betolevy"], format: "Hybrid", desc: "4 ECTS, 30h. Requires business idea ready to pitch. Groups of 3+. Part of Entrepreneurship Track.", concentrations: ["Innovation & Entrepreneurship"], note: "= 2 electives" },
     { id: "investready", name: "Investment Readiness", faculty: "Rodrigo Alvarenga", links: ["https://www.linkedin.com/in/rodrigodealvarenga"], format: "Hybrid", desc: "Preparing ventures for investment. Business model, financial metrics, valuation, pitch building, investor types. Open to all.", concentrations: ["Finance & Investments","Innovation & Entrepreneurship"] },
-    { id: "systemic", name: "Systemic Thinking for Innovation", faculty: "Rui Quinta + H. Nascimento", links: ["https://www.linkedin.com/in/rquinta/"], format: "Hybrid", desc: "Systems perspective on complexity. Mapping systems, deriving opportunities, value chain forces, resilient solutions.", concentrations: ["Strategy & Business","Innovation & Entrepreneurship"] },
+    { id: "systemic", name: "Systemic Thinking for Innovation", faculty: "Rui Quinta + H. Nascimento", links: ["https://www.linkedin.com/in/rquinta/"], format: "Hybrid", desc: "Systems perspective on complexity. Mapping systems, deriving opportunities, value chain forces, resilient solutions.", concentrations: ["Strategy & Business","Innovation & Entrepreneurship","Data, Tech & AI"] },
     { id: "esginnovation", name: "ESG | Tech & Innovation for Sustainability", faculty: "Telmo Machado", links: ["https://www.linkedin.com/in/telmo-machado"], format: "Hybrid", desc: "Circular Economy, decarbonisation. Circular business models, biomimicry, policy, KPIs for circular performance.", concentrations: ["Innovation & Entrepreneurship","Data, Tech & AI","Sustainability Certificate"], esg: true },
   ]},
   { group: "Data, Tech & AI", color: "#5b21b6", courses: [
@@ -40,7 +40,7 @@ const ELECTIVES = [
   { group: "Ops & Supply Chain", color: "#4a5568", courses: [
     { id: "esgchains", name: "ESG | Sustainable Global Value Chains", faculty: "Henrique Correa", links: ["https://www.linkedin.com/in/henrique-correa-ab992a2/"], format: "100% Online", desc: "Supply chain × business strategy. Competitive advantage through costs, flexibility, satisfaction. Two business games.", concentrations: ["Operations & Supply Chain","Sustainability Certificate"], esg: true },
     { id: "process", name: "Process Thinking", faculty: "Américo Azevedo", links: ["https://www.linkedin.com/in/americo-azevedo-02920627/"], format: "In-Person (PT)", desc: "Functional to process-oriented. Critical processes, multi-level models, strategy alignment. In Portuguese.", concentrations: ["Operations & Supply Chain"] },
-    { id: "genaiprod", name: "GenAI Product Development", faculty: "Nicolle Merril", links: ["https://www.linkedin.com/in/nicollemerrill"], format: "Hybrid", desc: "AI product categories (assistants, generators, agents). Build AI assistant with Custom GPTs. Testing, iteration.", concentrations: ["Innovation & Entrepreneurship","Data, Tech & AI","Operations & Supply Chain"] },
+    { id: "genaiprod", name: "GenAI Product Development", faculty: "Nicolle Merril", links: ["https://www.linkedin.com/in/nicollemerrill"], format: "Hybrid", desc: "AI product categories (assistants, generators, agents). Build AI assistant with Custom GPTs. Testing, iteration.", concentrations: ["Branding, Marketing & Sales","Innovation & Entrepreneurship","Data, Tech & AI","Operations & Supply Chain"] },
     { id: "projmgmt", name: "Project Management", faculty: "Alina Yaneva-Betcheva", links: ["https://www.linkedin.com/in/Alina-Yaneva2021"], format: "Hybrid", desc: "Project lifecycle, agile PM, Triple Bottom Line, charters, change management. Real-world examples.", concentrations: ["Finance & Investments","Branding, Marketing & Sales","Leadership & Human Skills","Innovation & Entrepreneurship","Data, Tech & AI","Operations & Supply Chain"] },
   ]},
   { group: "Leadership", color: "#9b1c1c", courses: [
@@ -71,6 +71,89 @@ const CONC_TAG={
   "Operations & Supply Chain":{label:"OPS",bg:"#f1f5f9",tx:"#334155"},
   "Sustainability Certificate":{label:"ESG",bg:"#d1fae5",tx:"#065f46"},
 };
+
+// Survey API (Teresa's Google Apps Script)
+const SURVEY_API='https://script.google.com/macros/s/AKfycbzJWpe4eU63Mz7nFXHmbbsMNXcFmOEsDF5zFsFw1IN7RGhzGLYPD8KnJsdtE2-oIzO7Mg/exec';
+const SURVEY_MAP={
+  "Private Equity and Venture Capital":"pevc","Blockchain & Fintech":"blockchain","Value Based Management":"vbm",
+  "Valuing Innovative Companies":"vic","ESG | ESG & Finance":"esgfin","ESG & Finance":"esgfin",
+  "Building Meaningful Brands":"brands","Strategic Sales Management":"sales",
+  "Narrative Strategy, Promotion and Advertising":"narrative",
+  "AI-Driven Marketing: Strategies for Digital Age":"aimarketing","AI-Driven Marketing":"aimarketing",
+  "Service Design & Customer Experience":"servicedesign","Service Design & CX":"servicedesign",
+  "Strategic Foresight: Navigating Uncertainty":"foresight","Strategic Foresight":"foresight",
+  "International Business":"intbiz","Advanced Strategy":"advstrategy",
+  "China in the World: Economy, Tech and Geopolitics":"china","China: Economy, Tech & Geopolitics":"china",
+  "Corporate Geopolitics & Economics":"geopolitics","Legal Intelligence for Strategic Management":"legal",
+  "ESG | Sustainability for Impact":"esgsustainability",
+  "Entrepreneurship Through Acquisitions":"eta","Entrepreneurial Lab":"elab","Investment Readiness":"investready",
+  "Systemic Thinking for Innovation":"systemic",
+  "ESG | Technology and Innovation for Sustainability":"esginnovation","ESG | Tech & Innovation for Sustainability":"esginnovation",
+  "AI Design Thinking":"aidesign",
+  "Strategic Prompt Engineering for Business":"prompting","Strategic Prompt Engineering":"prompting",
+  "Advanced Analytics":"analytics",
+  "Securing Enterprise AI: Risk, Governance and Control":"securingai","Securing Enterprise AI":"securingai",
+  "ESG | Sustainable Global Value Chains":"esgchains","Process Thinking":"process",
+  "Generative AI Product Development":"genaiprod","GenAI Product Development":"genaiprod",
+  "Project Management":"projmgmt","Transformational Leadership":"transflead","Advanced Negotiation":"negotiation",
+  "Building a Collaborative Culture":"collab",
+  "Cross Cultural Communication Management":"crosscultural","Cross Cultural Communication":"crosscultural",
+  "ESG | Building Social Capital Through Diversity":"esgdiversity","ESG | Social Capital Through Diversity":"esgdiversity",
+};
+function fixSurveySelections(raw){
+  const NAMES=new Set(Object.keys(SURVEY_MAP));const fixed=[];let i=0;
+  while(i<raw.length){let s=raw[i].trim();
+    if(!NAMES.has(s)&&i+1<raw.length){const j=s+" | "+raw[i+1].trim();if(NAMES.has(j)){fixed.push(j);i+=2;continue;}}
+    if(NAMES.has(s))fixed.push(s);i++;}
+  return fixed;
+}
+function parseSurveyVotes(allVotes){
+  const counts={};ALL.forEach(c=>{counts[c.id]=0;});
+  Object.values(allVotes).forEach(v=>{
+    if(v.selections){const fixed=fixSurveySelections(v.selections);
+      fixed.forEach(s=>{const id=SURVEY_MAP[s];if(id&&counts[id]!==undefined)counts[id]++;});}
+  });
+  return {counts,totalVoters:Object.keys(allVotes).length};
+}
+
+// API key management for external use (GitHub Pages)
+let _apiKey=null;
+let _apiKeyPromise=null;
+
+function getApiKeyFromUser(){
+  if(_apiKeyPromise)return _apiKeyPromise;
+  _apiKeyPromise=new Promise((resolve)=>{
+    const key=window.prompt("Para usar o agente AI fora do Claude.ai, insere a tua Anthropic API Key.\n\nPodes obter uma em: console.anthropic.com/settings/keys\n\nA key não é guardada permanentemente — apenas nesta sessão.");
+    if(key&&key.trim().startsWith("sk-")){_apiKey=key.trim();_apiKeyPromise=null;resolve(_apiKey);}
+    else{_apiKeyPromise=null;resolve(null);}
+  });
+  return _apiKeyPromise;
+}
+
+async function callClaude(system,messages,maxTokens){
+  // Try without key first (works inside Claude.ai artifacts)
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:maxTokens||1000,system,messages}),
+    });
+    if(r.ok){const d=await r.json();return d.content?.map(b=>b.text||"").join("")||"Sem resposta.";}
+  } catch(e) {}
+
+  // If failed, ask for API key
+  const key=_apiKey||await getApiKeyFromUser();
+  if(!key)return "⚠ Agente indisponível. Precisa de uma API key da Anthropic para funcionar fora do Claude.ai.";
+
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:maxTokens||1000,system,messages}),
+    });
+    if(!r.ok){const err=await r.text();if(err.includes("invalid")){_apiKey=null;}return "⚠ Erro: "+err;}
+    const d=await r.json();return d.content?.map(b=>b.text||"").join("")||"Sem resposta.";
+  } catch(e) {return "⚠ Erro de ligação: "+e.message;}
+}
 
 function buildReportHTML(fC,iC,fE,name,chosenConc,tECTS,track){
   const targetE=tECTS||10;
@@ -252,12 +335,8 @@ Concentrações: ${current.concentrations.join(", ")}${current.esg ? " | ESG" : 
 
 Análise BREVE (3-4 frases). Recomendação clara: INCLUIR ou SALTAR com justificação curta.`;
     try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 400, system: SYS, messages: [{ role: "user", content: prompt }] }),
-      });
-      const d = await r.json();
-      setAiText(d.content?.map(b => b.text || "").join("") || "Sem resposta.");
+      const text = await callClaude(SYS, [{ role: "user", content: prompt }], 400);
+      setAiText(text);
     } catch(e) { setAiText("Erro ao obter análise."); }
     setAiLoading(false);
   };
@@ -293,12 +372,8 @@ Análise BREVE (3-4 frases). Recomendação clara: INCLUIR ou SALTAR com justifi
     const msgs = [...chatMsgs, { role: "user", content: q }];
     setChatMsgs(msgs); setChatInput(""); setChatLoading(true);
     try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 500, system: SYS + "\n\n" + context, messages: msgs.map(m => ({ role: m.role, content: m.content })) }),
-      });
-      const d = await r.json();
-      setChatMsgs(p => [...p, { role: "assistant", content: d.content?.map(b => b.text || "").join("") || "Erro." }]);
+      const text = await callClaude(SYS + "\n\n" + context, msgs.map(m => ({ role: m.role, content: m.content })), 500);
+      setChatMsgs(p => [...p, { role: "assistant", content: text }]);
     } catch(e) { setChatMsgs(p => [...p, { role: "assistant", content: "Erro." }]); }
     setChatLoading(false);
   };
@@ -433,7 +508,7 @@ Análise BREVE (3-4 frases). Recomendação clara: INCLUIR ou SALTAR com justifi
 }
 
 /* ── Card ── */
-function Card({course,status,onInterest,onDiscard,onClear,isFinal,onToggleFinal,canAddFinal,onAsk,isLocked}){
+function Card({course,status,onInterest,onDiscard,onClear,isFinal,onToggleFinal,canAddFinal,onAsk,isLocked,votes}){
   const[exp,setExp]=useState(false);const b=fb(course.format);const disc=status==="discarded",int=status==="interested";
   const brd=isLocked?"#b85c00":isFinal?"#059669":int?"#2563eb":disc?"#fca5a5":"#e2e8f0";
   const bg=isLocked?"#fff7ed":isFinal?"#f0fdf4":int?"#eff6ff":disc?"#fef2f2":"#fff";
@@ -450,6 +525,7 @@ function Card({course,status,onInterest,onDiscard,onClear,isFinal,onToggleFinal,
       <div style={{flex:1,minWidth:0}}>
         <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:3}}>
           <span style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:disc?11:13,fontWeight:600,color:disc?"#94a3b8":"#1e293b",textDecoration:disc?"line-through":"none",lineHeight:1.2}}>{course.name}</span>
+          {votes!==undefined&&votes!==null&&votes>0&&<span style={{fontSize:7,fontWeight:700,padding:"0 4px",borderRadius:2,background:votes>=15?"#dcfce7":votes>=10?"#fef9c3":"#f1f5f9",color:votes>=15?"#166534":votes>=10?"#854d0e":"#94a3b8"}}>{votes>=15?"✅ Confirmada":"👥"+votes}</span>}
           {course.esg&&<span style={{fontSize:7,fontWeight:700,background:"#d1fae5",color:"#065f46",padding:"0 4px",borderRadius:2}}>ESG</span>}
           {course.note&&<span style={{fontSize:7,fontWeight:600,background:"#fef9c3",color:"#854d0e",padding:"0 4px",borderRadius:2}}>{course.note}</span>}
           {isLocked&&<span style={{fontSize:7,fontWeight:700,background:"#ffedd5",color:"#b85c00",padding:"0 4px",borderRadius:2}}>🔒 OBRIGATÓRIA</span>}
@@ -484,7 +560,7 @@ function ChatPanel({askTrigger}){
   useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth"})},[msgs,ld]);
   useEffect(()=>{if(askTrigger?.name){setInput(`Fala-me da "${askTrigger.name}". Vale a pena?`);setTimeout(()=>inputRef.current?.focus(),100)}},[askTrigger]);
   const send=async()=>{const q=input.trim();if(!q||ld)return;const u=[...msgs,{role:"user",content:q}];setMsgs(u);setInput("");setLd(true);
-    try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:SYS,messages:u.map(m=>({role:m.role,content:m.content}))})});const d=await r.json();setMsgs(p=>[...p,{role:"assistant",content:d.content?.map(b=>b.text||"").join("")||"Erro."}])} catch(e) {setMsgs(p=>[...p,{role:"assistant",content:"Erro."}])}setLd(false)};
+    try{const text=await callClaude(SYS,u.map(m=>({role:m.role,content:m.content})),1000);setMsgs(p=>[...p,{role:"assistant",content:text}])} catch(e) {setMsgs(p=>[...p,{role:"assistant",content:"Erro."}])}setLd(false)};
   return(<div style={{display:"flex",flexDirection:"column",height:"100%"}}>
     <div style={{flex:1,overflowY:"auto",padding:"8px 10px",display:"flex",flexDirection:"column",gap:6}}>
       {msgs.length===0&&<div style={{color:"#94a3b8",fontSize:11,textAlign:"center",marginTop:20,lineHeight:1.6}}>Pergunta o que quiseres.<br/><span style={{fontSize:10}}>"Compara X com Y" · "Que 5 sugeres?"</span></div>}
@@ -515,7 +591,21 @@ export default function App(){
   const[targetN,setTargetN]=useState(5);
   const[track,setTrack]=useState("none");
   const[concModal,setConcModal]=useState(false);
-  const[reportHTML,setReportHTML]=useState(null); // "none" | "entrepreneurship" | "sustainability"
+  const[reportHTML,setReportHTML]=useState(null);
+  const[surveyData,setSurveyData]=useState({counts:{},totalVoters:0});
+
+  // Fetch survey data on load and every 30s
+  useEffect(()=>{
+    const fetchSurvey=async()=>{
+      try{
+        const r=await fetch(SURVEY_API);const text=await r.text();const data=JSON.parse(text);
+        setSurveyData(parseSurveyVotes(data));
+      } catch(e) {console.log("Survey fetch error",e);}
+    };
+    fetchSurvey();
+    const interval=setInterval(fetchSurvey,30000);
+    return()=>clearInterval(interval);
+  },[]); // "none" | "entrepreneurship" | "sustainability"
 
   const targetECTS=targetN*2;
   const etLocked=track==="entrepreneurship";
@@ -598,7 +688,24 @@ export default function App(){
       <div style={{flex:1,overflowY:"auto",padding:"10px 10px"}}>
         <div style={{textAlign:"center",marginBottom:8}}>
           <h1 style={{fontFamily:"'Instrument Serif',Georgia,serif",fontSize:20,fontWeight:400,margin:0}}>PBS EMBA Electives 2025/26</h1>
-          <p style={{fontSize:10,color:"#64748b",margin:"2px 0 0"}}>Round 1: 13–19 Abril · Mín. 15 alunos por curso</p>
+          {(()=>{
+            const deadline=new Date("2026-04-19T23:59:59");
+            const now=new Date();
+            const diff=deadline-now;
+            if(diff<=0)return(<p style={{fontSize:10,color:"#ef4444",fontWeight:600,margin:"3px 0 0"}}>⏰ Round 1 encerrado</p>);
+            const days=Math.floor(diff/(1000*60*60*24));
+            const hours=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+            return(<p style={{fontSize:10,margin:"3px 0 0"}}>
+              <span style={{color:"#64748b"}}>Round 1 fecha 19 Abril · </span>
+              <span style={{color:days<=2?"#ef4444":days<=5?"#b45309":"#059669",fontWeight:700}}>
+                {days>0?`${days}d ${hours}h restantes`:hours>0?`${hours}h restantes`:"Último dia!"}
+              </span>
+              <span style={{color:"#94a3b8"}}> · Mín. 15 alunos/curso</span>
+            </p>);
+          })()}
+          {surveyData.totalVoters>0&&<p style={{fontSize:9,color:"#64748b",margin:"2px 0 0"}}>
+            📊 Survey: <span style={{fontWeight:600,color:"#1a3a6e"}}>{surveyData.totalVoters} respostas</span> · <span style={{color:"#059669",fontWeight:600}}>{Object.values(surveyData.counts).filter(v=>v>=15).length} com ≥15 votos</span> · <span style={{color:"#94a3b8"}}>atualiza a cada 30s</span>
+          </p>}
         </div>
 
         {/* Target & Track selectors */}
@@ -739,7 +846,7 @@ export default function App(){
             </button>
             {isOpen&&<div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:5,padding:"3px 0 3px 4px"}}>
               {fl.length===0&&<div style={{fontSize:10,color:"#94a3b8",padding:"2px 8px",gridColumn:"1/-1"}}>Nenhuma</div>}
-              {fl.map(c=><Card key={c.id} course={c} status={statuses[c.id]||"undecided"} onInterest={()=>setSt(c.id,"interested")} onDiscard={()=>{if(lockedIds.has(c.id))return;setSt(c.id,"discarded");setFinals(p=>{const n=new Set(p);n.delete(c.id);return n})}} onClear={()=>setSt(c.id,undefined)} isFinal={finals.has(c.id)} onToggleFinal={()=>togF(c.id)} canAddFinal={fECTS<targetECTS} onAsk={handleAsk} isLocked={lockedIds.has(c.id)}/>)}
+              {fl.map(c=><Card key={c.id} course={c} status={statuses[c.id]||"undecided"} onInterest={()=>setSt(c.id,"interested")} onDiscard={()=>{if(lockedIds.has(c.id))return;setSt(c.id,"discarded");setFinals(p=>{const n=new Set(p);n.delete(c.id);return n})}} onClear={()=>setSt(c.id,undefined)} isFinal={finals.has(c.id)} onToggleFinal={()=>togF(c.id)} canAddFinal={fECTS<targetECTS} onAsk={handleAsk} isLocked={lockedIds.has(c.id)} votes={surveyData.counts[c.id]}/>)}
             </div>}
           </div>);
         })}
